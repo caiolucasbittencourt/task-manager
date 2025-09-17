@@ -1,49 +1,47 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import AddTask from "./components/AddTask";
 import Tasks from "./components/Tasks";
-import { v4 } from "uuid";
-import Title from "./components/Title";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
-  const [tasks, setTasks] = useState(
-    JSON.parse(localStorage.getItem("tasks")) || []
-  );
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  function onTaskClick(taskId) {
-    const newTasks = tasks.map((task) =>
-      task.id === taskId ? { ...task, isCompleted: !task.isCompleted } : task
-    );
-    setTasks(newTasks);
+  function onAddTaskSubmit(title) {
+    if (title.trim()) {
+      const newTask = {
+        id: uuidv4(),
+        title,
+        isCompleted: false,
+      };
+      setTasks([...tasks, newTask]);
+    }
   }
 
-  function onDeleteTaskClick(taskId) {
-    const newTasks = tasks.filter((task) => task.id !== taskId);
-    setTasks(newTasks);
+  function onTaskToggle(id) {
+    setTasks(tasks.map(task => 
+      task.id === id ? { ...task, isCompleted: !task.isCompleted } : task
+    ));
   }
 
-  function onAddTaskSubmit(title, description) {
-    const newTask = {
-      id: v4(),
-      title,
-      description,
-      isCompleted: false,
-    };
-    setTasks([...tasks, newTask]);
+  function onDeleteTask(id) {
+    setTasks(tasks.filter(task => task.id !== id));
   }
 
   return (
-    <div className="w-screen h-screen bg-zinc-900 flex justify-center items-center p-6">
-      <div className="w-[500px] space-y-6">
-        <Title>Gerenciador de Tarefas</Title>
+    <div className="min-h-screen bg-darkBackground flex items-center justify-center font-sans text-lightText">
+      <div className="w-full max-w-2xl p-8 rounded-lg">
         <AddTask onAddTaskSubmit={onAddTaskSubmit} />
-        <Tasks
-          tasks={tasks}
-          onTaskClick={onTaskClick}
-          onDeleteTaskClick={onDeleteTaskClick}
+        <Tasks 
+          tasks={tasks} 
+          onTaskToggle={onTaskToggle}
+          onDeleteTask={onDeleteTask}
         />
       </div>
     </div>

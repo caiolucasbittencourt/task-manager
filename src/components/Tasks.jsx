@@ -1,38 +1,38 @@
-import { CheckIcon, ChevronRightIcon, TrashIcon } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import Button from "./Button";
+import { Check, Trash2 } from "lucide-react";
 
-function Tasks({ tasks, onTaskClick, onDeleteTaskClick }) {
-  const navigate = useNavigate();
-
-  function onSeeDetailsClick(task) {
-    const query = new URLSearchParams();
-    query.set("title", task.title);
-    query.set("description", task.description);
-    navigate(`/task?${query.toString()}`);
+function Tasks({ tasks, onTaskToggle, onDeleteTask }) {
+  if (tasks.length === 0) {
+    return <p className="text-center text-secondaryText mt-8">No tasks found.</p>;
   }
-
+  
   return (
-    <ul className="space-y-4 p-6 bg-zinc-800 rounded-2xl shadow-lg">
+    <ul className="space-y-4">
       {tasks.map((task) => (
-        <li key={task.id} className="flex gap-2 items-center">
+        <li
+          key={task.id}
+          className="flex items-center justify-between p-4 bg-darkSurface rounded-md shadow-sm border-l-4 border-darkSurface hover:border-lightText transition-colors duration-200 ease-in-out"
+        >
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => onTaskToggle(task.id)}
+              className={`w-8 h-8 rounded-full border-2 border-secondaryText flex items-center justify-center transition-colors ${
+                task.isCompleted ? "bg-lightText border-lightText" : ""
+              }`}
+            >
+              {task.isCompleted && <Check size={20} className="text-darkBackground" />}
+            </button>
+            <span
+              className={`text-lightText text-xl ${task.isCompleted ? "line-through text-secondaryText" : ""}`}
+            >
+              {task.title}
+            </span>
+          </div>
           <button
-            onClick={() => onTaskClick(task.id)}
-            className={`flex-1 flex items-center gap-2 text-white p-3 rounded-lg transition ${
-              task.isCompleted
-                ? "bg-green-700 line-through"
-                : "bg-zinc-700 hover:bg-zinc-600"
-            }`}
+            onClick={() => onDeleteTask(task.id)}
+            className="text-secondaryText hover:text-red-500 transition-colors"
           >
-            {task.isCompleted && <CheckIcon size={18} />}
-            {task.title}
+            <Trash2 size={24} />
           </button>
-          <Button onClick={() => onSeeDetailsClick(task)}>
-            <ChevronRightIcon size={18} />
-          </Button>
-          <Button onClick={() => onDeleteTaskClick(task.id)}>
-            <TrashIcon size={18} />
-          </Button>
         </li>
       ))}
     </ul>

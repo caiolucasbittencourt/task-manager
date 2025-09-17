@@ -1,39 +1,32 @@
 import { useState } from "react";
-import Input from "./Input";
+import { Plus } from "lucide-react";
 
 function AddTask({ onAddTaskSubmit }) {
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onAddTaskSubmit(title);
+    setTitle("");
+  };
 
   return (
-    <div className="space-y-4 p-6 bg-zinc-800 rounded-2xl shadow-lg flex flex-col">
-      <Input
+    <form onSubmit={handleSubmit} className="relative mb-8">
+      <input
         type="text"
-        placeholder="Título da tarefa"
+        placeholder="Add a new task..."
         value={title}
-        onChange={(event) => setTitle(event.target.value)}
-      />
-
-      <Input
-        type="text"
-        placeholder="Descrição da tarefa"
-        value={description}
-        onChange={(event) => setDescription(event.target.value)}
+        onChange={(e) => setTitle(e.target.value)}
+        className="w-full py-4 pr-12 bg-transparent text-lightText text-xl border-b-2 border-darkSurface focus:outline-none focus:border-accentText transition-colors"
       />
       <button
-        onClick={() => {
-          if (!title.trim() || !description.trim()) {
-            return alert("Preencha o título e a descrição da tarefa.");
-          }
-          onAddTaskSubmit(title, description);
-          setTitle("");
-          setDescription("");
-        }}
-        className="bg-purple-600 hover:bg-purple-700 transition text-white px-4 py-2 rounded-lg font-medium"
+        type="submit"
+        className="absolute right-0 bottom-0 p-3 text-secondaryText hover:text-lightText transition-colors"
+        aria-label="Add task"
       >
-        Adicionar
+        <Plus size={28} />
       </button>
-    </div>
+    </form>
   );
 }
 
