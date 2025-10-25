@@ -1,4 +1,4 @@
-# To-Do List
+# To Do List
 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
@@ -7,9 +7,9 @@
 
 O foco principal deste projeto foi a prática de **Tailwind CSS** para a construção de interfaces.
 
-## Pré-visualização
+## Preview
 
-![Screenshot do projeto](./src/assets/to-do-list-screenshot.png)
+![Preview](./src/assets/to-do-list-screenshot.png)
 
 ## Funcionalidades
 
@@ -26,3 +26,11 @@ O foco principal deste projeto foi a prática de **Tailwind CSS** para a constru
 - JavaScript
 - Vite
 - Tailwind CSS
+
+## Instalação
+
+```bash
+git clone https://github.com/caiolucasbittencourt/to-do-list
+cd to-do-list
+npm install
+npm run dev
